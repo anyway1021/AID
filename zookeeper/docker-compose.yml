@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  zk1:
+    image: zookeeper@sha256:7a4dc6cfc0ed2445530eb9225b138463addfaad9ec90a33c32829363059d2226
+    restart: on-failure
+    hostname: zk1
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zk2:2888:3888 server.3=zk3:2888:3888
+
+  zk2:
+    image: zookeeper@sha256:7a4dc6cfc0ed2445530eb9225b138463addfaad9ec90a33c32829363059d2226
+    restart: on-failure
+    hostname: zk2
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zk1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zk3:2888:3888
+
+  zk3:
+    image: zookeeper@sha256:7a4dc6cfc0ed2445530eb9225b138463addfaad9ec90a33c32829363059d2226
+    restart: on-failure
+    hostname: zk3
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zk1:2888:3888 server.2=zk2:2888:3888 server.3=0.0.0.0:2888:3888
+
